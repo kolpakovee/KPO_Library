@@ -29,12 +29,12 @@ public class Library {
     /**
      * Метод для получения книги из библиотеки по названию
      * @param nameOfBook название книги
-     * @return если название книги - null, то возвращаем null, иначе
+     * @return если название книги - null, то возвращаем список всех книг, иначе
      * список всех книг, содержащих название книги
      */
     public List<Book> getBooksByName(String nameOfBook) {
         if (nameOfBook == null) {
-            return null;
+            return books;
         }
 
         return books.stream()
@@ -47,17 +47,21 @@ public class Library {
      * @param book книга, которую пользователь хочет получить
      * @return если книги нет в библиотеке - null, иначе книгу
      */
-    public Book getBook(Book book) {
+    public Optional<Book> getBook(Book book) {
+        if (book == null){
+            return Optional.empty();
+        }
+
         Optional<Book> optionalBook = books.stream()
                 .filter(book1 -> book1.equals(book)).findFirst();
 
         if (optionalBook.isEmpty()){
-            return null;
+            return optionalBook;
         }
 
         books.remove(optionalBook.get());
 
-        return optionalBook.get();
+        return optionalBook;
     }
 
     /**

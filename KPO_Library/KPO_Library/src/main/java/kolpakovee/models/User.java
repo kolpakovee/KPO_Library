@@ -2,6 +2,7 @@ package kolpakovee.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -30,7 +31,6 @@ public class User {
         }
         library.putBook(book);
         books.remove(book);
-
     }
 
     /**
@@ -39,13 +39,8 @@ public class User {
      * @param book книга, которую пользователь хочет взять
      */
     public void getBookFromLibrary(Library library, Book book) {
-        Book newBook = library.getBook(book);
-
-        if (newBook == null) {
-            return;
-        }
-
-        books.add(newBook);
+        Optional<Book> newBook = library.getBook(book);
+        newBook.ifPresent(books::add);
     }
 
     /**
@@ -55,7 +50,7 @@ public class User {
      */
     public List<Book> getBooksByName(String bookName) {
         if (bookName == null) {
-            return null;
+            return books;
         }
 
         return books.stream()
